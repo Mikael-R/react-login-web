@@ -1,27 +1,65 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import "./styles.css";
 import logImg from "../../assets/log.svg";
 import registerImg from "../../assets/register.svg";
 
+interface SignIn {
+  username: string;
+  password: string;
+}
+
+interface SignUp extends SignIn {
+  email: string;
+}
+
 function Login() {
   const [signUpMode, setSignUpMode] = useState(false);
+  const [signIn, setSignIn] = useState<SignIn>({
+    username: '',
+    password: ''
+  });
+  const [signUp, setSignUp] = useState<SignUp>({
+    username: '',
+    email: '',
+    password: ''
+  });
+
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+
+    console.table([signUpMode, signIn, signUp])
+  }
 
   return (
     <div className={`container ${signUpMode ? "sign-up-mode" : ""}`}>
       <div className="forms-container">
         <div className="signin-signup">
-          <form action="/" className="sign-in-form">
+          <form onSubmit={handleSubmit} className="sign-in-form">
             <h2 className="title">Conecte-se</h2>
             <div className="input-field">
               <i className="fas fa-user"></i>
-              <input type="text" placeholder="Nome de usuário" />
+              <input
+                type="text"
+                placeholder="Nome de usuário"
+                required
+                value={signIn.username}
+                onChange={({ target }) => setSignIn({...signIn, username: target.value })}
+              />
             </div>
             <div className="input-field">
               <i className="fas fa-lock"></i>
-              <input type="password" placeholder="Senha" />
+              <input
+                type="password"
+                placeholder="Senha"
+                required
+                value={signIn.password}
+                onChange={({ target }) => setSignIn({...signIn, password: target.value })}
+              />
             </div>
             <input type="submit" value="Conectar" className="btn solid" />
-            <p className="social-text">Ou conecte-se usando plataformas sociais</p>
+            <p className="social-text">
+              Ou conecte-se usando plataformas sociais
+            </p>
             <div className="social-media">
               <a href="/" className="social-icon">
                 <i className="fab fa-facebook-f"></i>
@@ -37,19 +75,37 @@ function Login() {
               </a>
             </div>
           </form>
-          <form action="/" className="sign-up-form">
+          <form onSubmit={handleSubmit} className="sign-up-form">
             <h2 className="title">Cadastre-se</h2>
             <div className="input-field">
               <i className="fas fa-user"></i>
-              <input type="text" placeholder="Nome de usuário" />
+              <input
+                type="text"
+                placeholder="Nome de usuário"
+                required
+                value={signUp.username}
+                onChange={({ target }) => setSignUp({...signUp, username: target.value })}
+              />
             </div>
             <div className="input-field">
               <i className="fas fa-envelope"></i>
-              <input type="email" placeholder="E-mail" />
+              <input
+                type="email"
+                placeholder="E-mail"
+                required
+                value={signUp.email}
+                onChange={({ target }) => setSignUp({...signUp, email: target.value })}
+              />
             </div>
             <div className="input-field">
               <i className="fas fa-lock"></i>
-              <input type="password" placeholder="Senha" />
+              <input
+                type="password"
+                placeholder="Senha"
+                required
+                value={signUp.password}
+                onChange={({ target }) => setSignUp({...signUp, password: target.value })}
+              />
             </div>
             <input type="submit" className="btn" value="Cadastrar" />
             <p className="social-text">
